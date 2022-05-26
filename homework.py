@@ -1,6 +1,7 @@
 import os
 import logging
 from datetime import time
+import time
 
 import requests
 import telegram
@@ -32,9 +33,12 @@ def send_message(bot, message):
     return bot.send_message(TELEGRAM_CHAT_ID, message)
 
 
+current_timestamp = int(time.time())
+
+
 def get_api_answer(current_timestamp):
-    timestamp = current_timestamp or int(time.time())
-    params = {'from_date': timestamp}
+    timestamp = current_timestamp or int(time.time)
+    params = {'from_date': 0}
     valid_json = dict()
     try:
         response = requests.get(
@@ -43,55 +47,59 @@ def get_api_answer(current_timestamp):
             params=params
         )
         valid_json = response.json()
-    except requests.ConnectionError as e:
+    except requests.ConnectionError:
         message = 'Ошибка соединения.'
         logger.error(message)
         send_message(message)
-    return valid_json
-
+    return valid_json['homeworks'][0]
 
 # def check_response(response):
 #
 #     ...
 
-
 def parse_status(homework):
     homework_name = homework.get('homework_name', 'Нет имени работы')
-    homework_status = homework['status']
-    verdict = HOMEWORK_STATUSES['homework_status']
-    return f'Изменился статус проверки работы "{homework_name}". {verdict}'
+    print(homework_name)
+    try:
+        homework_status = homework['status']
+        verdict = HOMEWORK_STATUSES[homework_status]
+    except KeyError:
+        return (f'На за')
+    return f'Изменился статус проверки работы "{homework_name}". \n{verdict}'
 
+
+print(parse_status(get_api_answer(current_timestamp)))
 
 # def check_tokens():
 #     ...
 
 
-def main():
-    """Основная логика работы бота."""
-
-    ...
-
-    bot = telegram.Bot(token=TELEGRAM_TOKEN)
-    current_timestamp = int(time.time())
-
-    ...
-
-    while True:
-        try:
-            response = ...
-
-            ...
-
-            current_timestamp = ...
-            time.sleep(RETRY_TIME)
-
-        except Exception as error:
-            message = f'Сбой в работе программы: {error}'
-            ...
-            time.sleep(RETRY_TIME)
-        else:
-            ...
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#     """Основная логика работы бота."""
+#
+#     ...
+#
+#     bot = telegram.Bot(token=TELEGRAM_TOKEN)
+#     current_timestamp = int(time.time())
+#
+#     ...
+#
+#     while True:
+#         try:
+#             response = ...
+#
+#             ...
+#
+#             current_timestamp = ...
+#             time.sleep(RETRY_TIME)
+#
+#         except Exception as error:
+#             message = f'Сбой в работе программы: {error}'
+#             ...
+#             time.sleep(RETRY_TIME)
+#         else:
+#             ...
+#
+#
+# if __name__ == '__main__':
+#     main()

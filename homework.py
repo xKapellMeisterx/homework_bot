@@ -73,7 +73,7 @@ def get_api_answer(current_timestamp):
 def check_response(response):
     """Проверяет ответ API на корректность и
     возвращает список домашних работ."""
-    if type(response) is not dict:
+    if not isinstance(response, dict):
         raise TypeError('API возвращает не словарь')
     try:
         list_works = response['homeworks']

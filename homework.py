@@ -51,10 +51,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(current_timestamp):
-    """Делает запрос к единственному эндпоинту API-сервиса
-    и возвращает ответ API, преобразовав его из формата
-    JSON к типам данных Python.
-    """
+    """Делает запрос и возвращает ответ API."""
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
     response = requests.get(
@@ -69,9 +66,7 @@ def get_api_answer(current_timestamp):
 
 
 def check_response(response):
-    """Проверяет ответ API на корректность и
-    возвращает список домашних работ.
-    """
+    """Проверяет ответ API и возвращает список домашних работ."""
     if not isinstance(response, dict):
         raise TypeError('API возвращает не словарь')
     try:
@@ -88,9 +83,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """Извлекает из информации о конкретной домашней работе
-    статус этой работы.
-    """
+    """Извлекает из информации о домашней работе статус этой работы."""
     if 'homework_name' not in homework:
         raise KeyError('Отсутствует ключ "homework_name" в ответе API')
     if 'status' not in homework:

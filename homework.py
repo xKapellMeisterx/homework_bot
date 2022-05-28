@@ -1,7 +1,6 @@
 import os
 import logging
 from datetime import time
-import time
 from http import HTTPStatus
 from logging.handlers import RotatingFileHandler
 
@@ -52,8 +51,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(current_timestamp):
-    """
-    Делает запрос к единственному эндпоинту API-сервиса
+    """Делает запрос к единственному эндпоинту API-сервиса
     и возвращает ответ API, преобразовав его из формата
     JSON к типам данных Python.
     """
@@ -71,8 +69,7 @@ def get_api_answer(current_timestamp):
 
 
 def check_response(response):
-    """
-    Проверяет ответ API на корректность и
+    """Проверяет ответ API на корректность и
     возвращает список домашних работ.
     """
     if not isinstance(response, dict):
@@ -91,8 +88,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """
-    Извлекает из информации о конкретной домашней работе
+    """Извлекает из информации о конкретной домашней работе
     статус этой работы.
     """
     if 'homework_name' not in homework:

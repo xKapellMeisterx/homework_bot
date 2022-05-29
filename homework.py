@@ -43,18 +43,21 @@ def send_message(bot, message):
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logger.info(
-            f'Сообщение успешно отправленно в чат {TELEGRAM_CHAT_ID}: {message}'
+            f'Сообщение успешно отправленно в чат'
+            f' {TELEGRAM_CHAT_ID}: {message}'
         )
     except Exception as error:
         logging.error(error, exc_info=True)
-        logger.error(f'Ошибка отправки сообщения в телеграмм')
+        logger.error('Ошибка отправки сообщения в телеграмм')
 
 
 def get_api_answer(current_timestamp: int) -> dict:
     """Делает запрос и возвращает ответ API."""
     timestamp: int = current_timestamp or int(time.time())
     params: dict = {'from_date': timestamp}
-    request_data: dict = {'url': ENDPOINT, 'headers': HEADERS, 'params': params}
+    request_data: dict = {
+        'url': ENDPOINT, 'headers': HEADERS, 'params': params
+    }
     logger.info(f'Запрашиваем данные API у {ENDPOINT}')
     try:
         response: requests.models.Response = requests.get(**request_data)
@@ -69,7 +72,7 @@ def get_api_answer(current_timestamp: int) -> dict:
 
 def check_response(response: dict) -> dict:
     """Проверяет ответ API и возвращает список домашних работ."""
-    logger.info(f'Начинаем проверять ответ API')
+    logger.info('Начинаем проверять ответ API')
     if not isinstance(response, dict):
         raise TypeError(f'API возвращает не словарь, а {type(response)}')
     list_works: list = response.get('homeworks')
@@ -123,8 +126,8 @@ def main():
     ERROR_CACHE_MESSAGE = ''
     if not check_tokens():
         logger.critical(
-            f'Проверьте правильность заполнения этих токенов:'
-            f'PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID'
+            'Проверьте правильность заполнения этих токенов:'
+            'PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID'
         )
         raise SystemExit('Отсутствуют одна или несколько переменных окружения')
     while True:

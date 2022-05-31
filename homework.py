@@ -71,7 +71,7 @@ def check_response(response: dict) -> dict:
         raise TypeError(f'API возвращает не словарь, а {type(response)}')
     list_works: list = response.get('homeworks')
     if not isinstance(list_works, list):
-        raise TypeError(f'По ключу "homeworks" возвращается не список,'
+        raise TypeError('По ключу "homeworks" возвращается не список,'
                         f' а {type(response)}')
     if not all(k in response for k in ('homeworks', 'current_date')):
         raise MissingKeysInDictionary('Отсутствуют ключи в словаре')
@@ -109,8 +109,10 @@ def main():
     STATUS = ''
     ERROR_CACHE_MESSAGE = ''
     if not check_tokens():
-        message = 'Проверьте правильность заполнения этих токенов:' \
-                  ' PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID'
+        message = (
+            'Проверьте правильность заполнения этих токенов:'
+            ' PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID'
+        )
         logger.critical(message)
         sys.exit(message)
     while True:
@@ -123,7 +125,7 @@ def main():
                 STATUS = message
             time.sleep(RETRY_TIME)
         except Exception as error:
-            logger.error(f'Ошибка отправки сообщения в телеграмм {error}')
+            logger.error(f'Не удалось отправить сообщение. Ошибка: {error}')
             message_t = str(error)
             if message_t != ERROR_CACHE_MESSAGE:
                 send_message(bot, message_t)
